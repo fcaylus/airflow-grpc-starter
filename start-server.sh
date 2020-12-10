@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-cd server
+cd src/server
 python server.py

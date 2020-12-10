@@ -1,8 +1,8 @@
 syntax = "proto3";
 
+// Package names are ignore by the Python proto compiler.
+// Instead, the directory structure is used to generate Python packages.
 package package_name_is_not_used_by_python_compiler;
-
-option py_generic_services = true;
 
 service PingService {
   rpc ping(PingRequest) returns (PingResponse) {}
@@ -12,5 +12,5 @@ message PingRequest {
 }
 
 message PingResponse {
-  string response = 1;
+  string message = 1;
 }
