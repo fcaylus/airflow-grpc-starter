@@ -1,0 +1,48 @@
+version: '3'
+
+x-airflow-env:
+  &airflow-env
+  AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres/airflow
+  AIRFLOW__CORE__EXECUTOR: LocalExecutor
+  AIRFLOW__CORE__FERNET_KEY: ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg=
+
+x-airflow-volumes:
+  &airflow-volumes
+  - ./src/dags:/opt/airflow/dags
+  - ./src/plugins:/opt/airflow/plugins
+  - logs:/opt/airflow/logs
+
+volumes:
+  logs:
+
+services:
+  dockerhost:
+    image: qoomon/docker-host
+    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+    mem_limit: 8M
+    restart: on-failure
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+  scheduler:
+    build:
+      context: .
+    environment: *airflow-env
+    volumes: *airflow-volumes
+    depends_on: [ dockerhost, postgres ]
+    entrypoint: /bin/bash -c 'airflow initdb && airflow scheduler'
+    command: scheduler
+    restart: on-failure
+  webserver:
+    build:
+      context: .
+    command: webserver
+    environment: *airflow-env
+    volumes: *airflow-volumes
+    depends_on: [ dockerhost, postgres, scheduler ]
+    restart: on-failure
+    ports:
+      - "8084:8080"

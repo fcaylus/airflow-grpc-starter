@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package package_name_is_not_used_by_python_compiler;
+
+option py_generic_services = true;
+
+service PingService {
+  rpc ping(PingRequest) returns (PingResponse) {}
+}
+
+message PingRequest {
+}
+
+message PingResponse {
+  string response = 1;
+}

@@ -1,0 +1,4 @@
+apache-airflow==1.10.12
+grpcio-tools==1.34.0
+apache-airflow-backport-providers-grpc==2020.10.29
+grpc=1.34.0
