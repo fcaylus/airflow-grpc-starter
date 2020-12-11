@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-// Package names are ignore by the Python proto compiler.
+// Package names are ignored by the Python proto compiler.
 // Instead, the directory structure is used to generate Python packages.
 package package_name_is_not_used_by_python_compiler;
 
